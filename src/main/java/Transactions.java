@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Transactions {
 
     // Steps
@@ -7,4 +12,19 @@ public class Transactions {
     // Break it up in parts
     // Use parts to instantiate ledger object??
 
+
+    public static void main(String[] args) {
+
+        try {
+            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e);
+        }
+    }
 }
