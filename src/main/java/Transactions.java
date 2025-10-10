@@ -19,7 +19,12 @@ public class Transactions {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            bufferedReader.readLine();
+            while (true) {
+                String line = bufferedReader.readLine();
+                if (line == null) {
+                    break;
+                }
+            }
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + e);
