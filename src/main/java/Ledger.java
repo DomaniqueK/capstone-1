@@ -1,20 +1,60 @@
-import java.io.BufferedReader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Ledger {
-    public static void main(String[] args) {
 
-        ArrayList<Transactions> ledger = new ArrayList<>();
+    LocalDate date;
+    LocalTime time;
+    String description;
+    String type;
+    double amount;
 
-        String description;
-        String type;
-        double amount;
-        LocalDate date;
-        LocalTime time;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Ledger(LocalDate date, LocalTime time, String description, String type, double amount) {
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.type = type;
+        this.amount = amount;
 
     }
 }
