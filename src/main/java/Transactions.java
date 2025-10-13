@@ -1,35 +1,60 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Transactions {
 
-    // Steps
-    // Create transactions.csv file
-    // Open file in the bufferedreader
-    // Read the header
-    // Break it up in parts
-    // Use parts to instantiate ledger object??
+    LocalDate date;
+    LocalTime time;
+    String description;
+    String type;
+    double amount;
 
+    public LocalDate getDate() {
+        return date;
+    }
 
-    public static void main(String[] args) {
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-        try {
-            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+    public LocalTime getTime() {
+        return time;
+    }
 
-            while (true) {
-                String line = bufferedReader.readLine();
-                if (line == null) {
-                    break;
-                }
-            }
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e);
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e);
-        }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Transactions(LocalDate date, LocalTime time, String description, String type, double amount) {
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.type = type;
+        this.amount = amount;
+
     }
 }
