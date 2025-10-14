@@ -48,7 +48,6 @@ public class LedgerApp {
     }
 
     public static void loadTransaction(String[] args) {
-        loadTransaction();
 
         try {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
@@ -77,9 +76,10 @@ public class LedgerApp {
             System.out.println("Error in Input/Output" + e);
         }
 
+    } public static String getInput(Scanner scanner, String prompt){
+        System.out.println(prompt);
+        return prompt;
     }
 
-    private static void loadTransaction() {
-    }
 }
 
