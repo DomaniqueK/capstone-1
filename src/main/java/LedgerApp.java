@@ -9,13 +9,22 @@ import java.util.Scanner;
 
 public class LedgerApp {
     Scanner scanner = new Scanner(System.in);
-    ArrayList<Transactions> transactions = new ArrayList<>();
+    static ArrayList<Transactions> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
         displayHomeMenu();
     }
 
     private static void displayHomeMenu() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n --- Home Screen --- \n");
+            System.out.println("L) Ledger View");
+            System.out.println("A) Add Payment/Deposit");
+            System.out.println("D) Reports");
+            System.out.println("X) Exit");
+            System.out.println("Enter your choice: ");
+        }
     }
 
     public static void loadTransaction(String[] args) {
@@ -37,6 +46,8 @@ public class LedgerApp {
                     String description = actions[2];
                     String type = actions[3];
                     double amount = Double.parseDouble(actions[4]);
+                    Transactions newTransaction = new Transactions(date, time, description, type, amount);
+                    transactions.add(newTransaction);
                 }
             }
 
