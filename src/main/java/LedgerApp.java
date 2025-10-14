@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LedgerApp {
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     static ArrayList<Transactions> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -24,6 +24,26 @@ public class LedgerApp {
             System.out.println("D) Reports");
             System.out.println("X) Exit");
             System.out.println("Enter your choice: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "L":
+                    System.out.println(" Loading Ledger View ");
+                    break;
+                case "A":
+                    System.out.println(" Loading Add Transactions ");
+                    break;
+                case "D":
+                    System.out.println(" Loading Reports ");
+                    break;
+                case "X":
+                    running = false;
+                    System.out.println("Exiting Application");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please choose one of the following options: L, A, D, or X ");
+            }
         }
     }
 
