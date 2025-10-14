@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,7 +14,7 @@ public class LedgerApp {
     public static void main(String[] args) {
     }
 
-    public static void loadtransaction(String[] args) {
+    public static void loadTransaction(String[] args) {
 
         try {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
@@ -20,10 +22,25 @@ public class LedgerApp {
 
             bufferedReader.readLine();
 
+            String input = "";
+            boolean running = true;
+            while (running= (bufferedReader.readLine())  != null) {
+                String[] actions = input.split("\\|");
+                if (actions.length >= 5 ) {
+                    LocalDate date = LocalDate.parse(actions[0]);
+                    LocalTime time = LocalTime.parse(actions[1]);
+                    String description = actions[2];
+                    String type = actions[3];
+                    double amount = Double.parseDouble(actions[4]);
+                }
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println("File not found " + e);
         } catch (IOException e) {
-            System.out.println("Please select another option " + e);
+            System.out.println("Error in Input/Output" + e);
         }
+
     }
     }
+
