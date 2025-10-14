@@ -12,9 +12,14 @@ public class LedgerApp {
     ArrayList<Transactions> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
+        displayHomeMenu();
+    }
+
+    private static void displayHomeMenu() {
     }
 
     public static void loadTransaction(String[] args) {
+        loadTransaction();
 
         try {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
@@ -42,5 +47,8 @@ public class LedgerApp {
         }
 
     }
+
+    private static void loadTransaction() {
     }
+}
 
