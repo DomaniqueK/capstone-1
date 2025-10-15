@@ -6,7 +6,7 @@ public class Transactions {
     LocalDate date;
     LocalTime time;
     String description;
-    String type;
+    String vendor;
     double amount;
 
     public LocalDate getDate() {
@@ -33,12 +33,12 @@ public class Transactions {
         this.description = description;
     }
 
-    public String getType() {
-        return type;
+    public String getVendor() {
+        return vendor;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
     public double getAmount() {
@@ -49,11 +49,11 @@ public class Transactions {
         this.amount = amount;
     }
 
-    public Transactions(LocalDate date, LocalTime time, String description, String type, double amount) {
+    public Transactions(LocalDate date, LocalTime time, String description, String vendor, double amount) {
         this.date = date;
         this.time = time;
         this.description = description;
-        this.type = type;
+        this.vendor = vendor;
         this.amount = amount;
 
     }

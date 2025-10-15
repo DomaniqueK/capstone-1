@@ -12,6 +12,7 @@ public class LedgerApp {
     static ArrayList<Transactions> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
+        loadTransaction();
         displayHomeMenu();
     }
 
@@ -47,25 +48,23 @@ public class LedgerApp {
         }
     }
 
-    public static void loadTransaction(String[] args) {
+    private static void loadTransaction() {
 
         try {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            bufferedReader.readLine();
-
-            String input = "";
-            boolean running = true;
-            while (running= (bufferedReader.readLine())  != null) {
-                String[] actions = input.split("\\|");
-                if (actions.length >= 5 ) {
+            String line = bufferedReader.readLine();
+            while ((line = bufferedReader.readLine())  != null) {
+                String[] actions = line.split("\\|");
+                if (actions.length == 4 ) {
+                    String dateTimeString = actions[0].trim();
                     LocalDate date = LocalDate.parse(actions[0]);
                     LocalTime time = LocalTime.parse(actions[1]);
                     String description = actions[2];
-                    String type = actions[3];
-                    double amount = Double.parseDouble(actions[4]);
-                    Transactions newTransaction = new Transactions(date, time, description, type, amount);
+                    String vendor = actions[3];
+                    double amount = Double.parseDouble(actions[3]);
+                    Transactions newTransaction = new Transactions(date, time, description, vendor, amount);
                     transactions.add(newTransaction);
                 }
             }
@@ -78,8 +77,16 @@ public class LedgerApp {
 
     } public static String getInput(Scanner scanner, String prompt){
         System.out.println(prompt);
-        return prompt;
+        return scanner.nextLine();
     }
+    private static void addDeposit(){
+        return;
+    }
+    private static void makePayment(){
+        return;
+    }
+    // Will help write to the CSV file
+    private static void saveTransaction(Transactions transaction){}
 
 }
 
