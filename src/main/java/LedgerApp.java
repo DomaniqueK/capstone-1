@@ -120,5 +120,36 @@ public class LedgerApp {
             System.out.println("Error saving transaction to file: " + e);
         }
     }
+    private static void displayLedgerScreen() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n Ledger View \n ");
+            System.out.println("A) All Transactions");
+            System.out.println("D) Deposits");
+            System.out.println("P) Payments (Debits)");
+            System.out.println("R) Reports");
+            System.out.println("H) Home (Main Menu)");
+            System.out.println("Enter your choice: ");
+
+            String choice = scanner.nextLine().toUpperCase();
+
+            switch (choice) {
+                case "A":
+                    displayAllTransactions();
+                    break;
+                case "D":
+                    displayDeposits();
+                    break;
+                case "R":
+                    displayReports();
+                    break;
+                case "H":
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please choose one the following options: A, D, P, R, or H");
+            }
+        }
+    }
 }
 
