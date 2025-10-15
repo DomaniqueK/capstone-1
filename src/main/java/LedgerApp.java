@@ -20,30 +20,30 @@ public class LedgerApp {
         boolean running = true;
         while (running) {
             System.out.println("\n --- Home Screen --- \n");
-            System.out.println("L) Ledger View");
-            System.out.println("A) Add Payment/Deposit");
-            System.out.println("D) Reports");
+            System.out.println("L) View Ledger");
+            System.out.println("D) Add Deposit");
+            System.out.println("P) Make Payment");
             System.out.println("X) Exit");
             System.out.println("Enter your choice: ");
 
             String choice = scanner.nextLine();
 
-            switch (choice) {
+            switch (choice.toUpperCase()) {
                 case "L":
-                    System.out.println(" Loading Ledger View ");
-                    break;
-                case "A":
-                    System.out.println(" Loading Add Transactions ");
+                    System.out.println(" View Ledger");
                     break;
                 case "D":
-                    System.out.println(" Loading Reports ");
+                    System.out.println(" Add Deposit ");
+                    break;
+                case "P":
+                    System.out.println(" Make Payment");
                     break;
                 case "X":
                     running = false;
                     System.out.println("Exiting Application");
                     break;
                 default:
-                    System.out.println("Invalid choice! Please choose one of the following options: L, A, D, or X ");
+                    System.out.println("Invalid choice! Please choose one of the following options: L, D, P, or X ");
             }
         }
     }
@@ -79,14 +79,17 @@ public class LedgerApp {
         System.out.println(prompt);
         return scanner.nextLine();
     }
-    private static void addDeposit(){
-        return;
+    private static void addDeposit() {
+        System.out.println("\n Add Deposit ");
+        String description = getInput(scanner, "Enter description: ");
+        String vendor = getInput(scanner, "Enter vendor/source: ");
+        double amount = Double.parseDouble(getInput(scanner, "Enter amount"));
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+        Transactions newTransaction = new Transactions(date, time, description, vendor, amount);
+        transactions.add(newTransaction);
+        System.out.println("Deposit added to account!");
     }
-    private static void makePayment(){
-        return;
-    }
-    // Will help write to the CSV file
-    private static void saveTransaction(Transactions transaction){}
 
 }
 
