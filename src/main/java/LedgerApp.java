@@ -91,5 +91,19 @@ public class LedgerApp {
         System.out.println("Deposit added to account!");
     }
 
+    public static void makePayment() {
+        System.out.println("\n Make Payment ");
+        String description = getInput(scanner, "Enter description: ");
+        String vendor = getInput(scanner, "Enter vendor/source: ");
+        double amountInput = Double.parseDouble(getInput(scanner, "Enter amount"));
+        double amount = -amountInput;
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+        Transactions newTransaction = new Transactions(date, time, description, vendor, amount);
+        transactions.add(newTransaction);
+        System.out.println("Payment successfully made!");
+    }
+
+
 }
 
