@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -101,9 +98,27 @@ public class LedgerApp {
         LocalTime time = LocalTime.now();
         Transactions newTransaction = new Transactions(date, time, description, vendor, amount);
         transactions.add(newTransaction);
-        System.out.println("Payment successfully made!");
+        System.out.println("Payment made successfully!");
     }
+    private static void saveTransaction(Transactions transactions) {
+        String transactionFile = "transactions.csv";
+        try (FileWriter fileWriter = new FileWriter(transactionFile, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        PrintWriter printWriter = new PrintWriter(bufferedWriter);
+        ) {
 
+            String line = String.format("%s %s | %s | %s | %.2f",
+                    transactions.getDate(),
+                    transactions.getTime(),
+                    transactions.getDescription(),
+                    transactions.getVendor(),
+                    transactions.getAmount()
+            );
+            printWriter.println();
 
+        } catch (IOException e) {
+            System.out.println("Error saving transaction to file: " + e);
+        }
+    }
 }
 
