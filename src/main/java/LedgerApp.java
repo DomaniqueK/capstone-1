@@ -5,17 +5,20 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class LedgerApp {
+    // Declare and instantiate the Scanner and ArrayList so that it can be used throughout entire application
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<Transactions> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
+        // Calling the loadTransaction from the csv file to load the information and displayHomeMenu to get the app started
         loadTransaction();
         displayHomeMenu();
     }
 
     private static void displayHomeMenu() {
+        // Using a while loop to make sure the display menu runs until the users chooses to exit
         boolean running = true;
-        while (running) {
+        while (running) { // Print out the Home menu options
             System.out.println("\n --- Home Screen --- \n");
             System.out.println("L) View Ledger");
             System.out.println("D) Add Deposit");
@@ -24,22 +27,22 @@ public class LedgerApp {
             System.out.println("Enter your choice: ");
 
             String choice = scanner.nextLine();
-
+            // Using a switch statement to route the users input to the correct sub-method they want and have ability to switch through the screens
             switch (choice.toUpperCase()) {
                 case "L":
-                    displayLedgerScreen();
+                    displayLedgerScreen(); // Calling the ledger
                     break;
                 case "D":
-                    addDeposit();
+                    addDeposit(); // Calls the make deposit method and updates the application/ledger
                     break;
                 case "P":
-                    makePayment();
+                    makePayment(); // Calls the make payment method and updates the application/ledger
                     break;
                 case "X":
-                    running = false;
+                    running = false; // Exit the program
                     System.out.println("Exiting Application");
                     break;
-                default:
+                default: // Used for invalid choices
                     System.out.println("Invalid choice! Please choose one of the following options: L, D, P, or X ");
             }
         }
@@ -47,12 +50,12 @@ public class LedgerApp {
 
     private static void loadTransaction() {
 
-        try {
+        try { // Set up FileReader and BufferedReader
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            bufferedReader.readLine();
-            bufferedReader.readLine();
+            bufferedReader.readLine(); // Reads and discards the title
+            bufferedReader.readLine(); // Reads and discards header
 
             String line;
             while ((line = bufferedReader.readLine())  != null) {
