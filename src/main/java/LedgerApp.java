@@ -379,10 +379,7 @@ public class LedgerApp {
         }
         ArrayList<Transactions> filteredList = new ArrayList<>();
         for (Transactions t : transactions) {
-            boolean passesAllFilters = true;
-            if (startDate != null && t.getDate().isBefore(startDate)) {
-                passesAllFilters = false;
-            }
+            boolean passesAllFilters = startDate == null || !t.getDate().isBefore(startDate);
             if (endDate != null && t.getDate().isAfter(endDate)) {
                 passesAllFilters = false;
             }
@@ -393,8 +390,9 @@ public class LedgerApp {
                 passesAllFilters = false;
             }
             if (searchAmount != null) {
-                if(Math.abs(t.getAmount() - searchAmount) > 0.005) {
-                    passesAllFilters = false;
+                double below = searchAmount - 0.05;
+                double above = searchAmount + 0.05;
+                if (t.getAmount() < below || t.getAmount() > above){
                 }
             }
             if (passesAllFilters) {
