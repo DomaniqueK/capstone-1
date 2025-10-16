@@ -1,8 +1,8 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 public class LedgerApp {
     static Scanner scanner = new Scanner(System.in);
@@ -27,13 +27,13 @@ public class LedgerApp {
 
             switch (choice.toUpperCase()) {
                 case "L":
-                    System.out.println(" View Ledger");
+                    displayLedgerScreen();
                     break;
                 case "D":
-                    System.out.println(" Add Deposit ");
+                    addDeposit();
                     break;
                 case "P":
-                    System.out.println(" Make Payment");
+                    makePayment();
                     break;
                 case "X":
                     running = false;
@@ -51,16 +51,22 @@ public class LedgerApp {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            String line = bufferedReader.readLine();
+            bufferedReader.readLine();
+            bufferedReader.readLine();
+
+            String line;
             while ((line = bufferedReader.readLine())  != null) {
                 String[] actions = line.split("\\|");
-                if (actions.length == 4 ) {
-                    String dateTimeString = actions[0].trim();
-                    LocalDate date = LocalDate.parse(actions[0]);
-                    LocalTime time = LocalTime.parse(actions[1]);
+                if (actions.length == 5 ) {
+                    LocalDate date = LocalDate.parse(actions[0].trim());
+                    LocalTime time = LocalTime.parse(actions[1].trim());
                     String description = actions[2];
-                    String vendor = actions[3];
-                    double amount = Double.parseDouble(actions[3]);
+                    String type = actions[3];
+                    String vendor = type; // type is the name on my csv file so it's a placeholder
+                    double amount = Double.parseDouble(actions[4]);
+                    if (type.equalsIgnoreCase("Debit")){
+                        amount = -amount;
+                    }
                     Transactions newTransaction = new Transactions(date, time, description, vendor, amount);
                     transactions.add(newTransaction);
                 }
@@ -107,14 +113,14 @@ public class LedgerApp {
         PrintWriter printWriter = new PrintWriter(bufferedWriter);
         ) {
 
-            String line = String.format("%s %s | %s | %s | %.2f",
+            String line = String.format("%s %s|%s |%s|%.2f",
                     transactions.getDate(),
                     transactions.getTime(),
                     transactions.getDescription(),
                     transactions.getVendor(),
                     transactions.getAmount()
             );
-            printWriter.println();
+            printWriter.println(line);
 
         } catch (IOException e) {
             System.out.println("Error saving transaction to file: " + e);
@@ -140,6 +146,9 @@ public class LedgerApp {
                 case "D":
                     displayDeposits();
                     break;
+                case "P":
+                    displayPayments();
+                    break;
                 case "R":
                     displayReports();
                     break;
@@ -150,6 +159,250 @@ public class LedgerApp {
                     System.out.println("Invalid choice. Please choose one the following options: A, D, P, R, or H");
             }
         }
+    }
+    private static void displayAllTransactions() {
+        System.out.println("\n Displaying All transactions \n");
+        ArrayList<Transactions> displayList = new ArrayList<>(transactions);
+        Collections.sort(displayList, new Comparator<Transactions>() {
+            @Override
+            public int compare(Transactions t1, Transactions t2) {
+                int dateComparison = t2.getDate().compareTo(t1.getDate());
+                if (dateComparison != 0) {
+                    return dateComparison;
+                }
+                return t2.getTime().compareTo(t1.getTime());
+            }
+        });
+        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.println("  ");
+        for (Transactions t : displayList) {
+            System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                    t.getDate(),
+                    t.getTime(),
+                    t.getDescription(),
+                    t.getVendor(),
+                    t.getAmount());
+        }
+    }
+    private static void displayDeposits() {
+        System.out.println("\n Displaying Deposits \n");
+        displayTransactions(true);
+    }
+    private static void displayPayments() {
+        System.out.println("\n Displaying Payments \n");
+        displayTransactions(false);
+    }
+    private static void displayTransactions(boolean isDeposit) {
+        ArrayList<Transactions> filteredList = new ArrayList<>();
+        for (Transactions t : transactions) {
+            if (isDeposit && t.getAmount() > 0) {
+                filteredList.add(t);
+            } else if (!isDeposit && t.getAmount() < 0) {
+                filteredList.add(t);
+            }
+        }
+        Collections.sort(filteredList, new Comparator<Transactions>() {
+            @Override
+            public int compare(Transactions t1,Transactions t2) {
+                int dateComparison = t2.getDate().compareTo(t1.getDate());
+                if (dateComparison != 0) return dateComparison;
+                return t2.getTime().compareTo(t1.getTime());
+            }});
+        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.println("  ");
+        for (Transactions t : filteredList) {
+            System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                    t.getDate(),
+                    t.getTime(),
+                    t.getDescription(),
+                    t.getVendor(),
+                    t.getAmount());
+        }
+        if (filteredList.isEmpty()) {
+            System.out.println("No matching transactions found.");
+        }
+    }
+    private static void displayReports() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n Full Account Report \n");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year to Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
+            System.out.println("H) Home (Main Menu");
+            System.out.println("Enter your choice:");
+
+            String choice = scanner.nextLine().toUpperCase();
+
+            switch (choice) {
+                case "1":
+                    filterByMonthToDate();
+                    break;
+                case "2":
+                    filterByPreviousMonth();
+                    break;
+                case "3":
+                    filterByYearToDate();
+                    break;
+                case "4":
+                    filterByPreviousYear();
+                    break;
+                case "5":
+                    searchByVendor();
+                    break;
+                case "6":
+                    customSearch();
+                    break;
+                case "H":
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please choose a number 1-6, or H");
+            }
+        }
+    }
+    private static void displayFilteredList(ArrayList<Transactions> listToDisplay) {
+        if (listToDisplay.isEmpty()) {
+            System.out.println("No matching transactions found");
+            return;
+        }
+        Collections.sort(listToDisplay, new Comparator<Transactions>() {
+            @Override
+            public int compare(Transactions t1, Transactions t2) {
+                int dateComparison = t2.getDate().compareTo(t1.getDate());
+                if (dateComparison != 0) {
+                    return dateComparison;
+                }
+                return t2.getTime().compareTo(t1.getTime());
+            }
+        });
+        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.println("  ");
+        for (Transactions t : listToDisplay) {
+            System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+                    t.getDate(),
+                    t.getTime(),
+                    t.getDescription(),
+                    t.getVendor(),
+                    t.getAmount());
+        }
+    }
+    private static void searchByVendor() {
+        System.out.println("\n Search By Vendor \n");
+        String vendorSearch = getInput(scanner, "Enter vendor name: ");
+        ArrayList<Transactions> filteredList = new ArrayList<>();
+        for (Transactions t : transactions) {
+            if (t.getVendor().toUpperCase().contains(vendorSearch.toUpperCase())){
+                filteredList.add(t);
+            }
+        }
+        System.out.println("\n Results for Vendor: " + vendorSearch + " \n");
+        displayFilteredList(filteredList);
+    }
+    private static void filterByMonthToDate() {
+        System.out.println(" Month to Date Report ");
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
+        LocalDate endDate = today;
+        ArrayList<Transactions> filteredList = getTransactionsInDateRange(startDate, endDate);
+        System.out.printf(" Filtering from %s to %s\n", startDate, endDate);
+        displayFilteredList(filteredList);
+    }
+    private static void filterByPreviousMonth() {
+        System.out.println(" \n Previous Month Report \n ");
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayofThisMonth = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
+        LocalDate endDate = firstDayofThisMonth.minusDays(1);
+        LocalDate startDate = endDate.withDayOfMonth(1);
+        ArrayList<Transactions> filteredList = getTransactionsInDateRange(startDate, endDate);
+        System.out.printf(" Filtering from %s to %s\n", startDate, endDate);
+        displayFilteredList(filteredList);
+    }
+    private static void filterByYearToDate() {
+        System.out.println(" \n Year To Date Report \n ");
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = LocalDate.of(today.getYear(), 1, 1);
+        LocalDate endDate = today;
+        ArrayList<Transactions> filteredList = getTransactionsInDateRange(startDate, endDate);
+        System.out.printf(" Filtering from %s to %s\n", startDate, endDate);
+        displayFilteredList(filteredList);
+    }
+    private static void filterByPreviousYear() {
+        System.out.println("\n Previous Year Report \n ");
+        LocalDate lastYear = LocalDate.now().minusYears(1);
+        LocalDate startDate = LocalDate.of(lastYear.getYear(), 1, 1);
+        LocalDate endDate = LocalDate.of(lastYear.getYear(), 12, 31);
+        ArrayList<Transactions> filteredList = getTransactionsInDateRange(startDate, endDate);
+        System.out.printf(" Filtering from %s to %s\n", startDate, endDate);
+        displayFilteredList(filteredList);
+    }
+    private static ArrayList<Transactions> getTransactionsInDateRange(LocalDate startDate, LocalDate endDate){
+        ArrayList<Transactions> filteredList = new ArrayList<>();
+        for (Transactions t : transactions) {
+            LocalDate transactionDate = t.getDate();
+            if (!transactionDate.isBefore(startDate) && !transactionDate.isAfter(endDate)) {
+                filteredList.add(t);
+            }
+        }
+        return filteredList;
+    }
+    private static void customSearch() {
+        System.out.println("\n Custom Search \n ");
+        String startDateInput = getInput(scanner, "Enter Start Date (YYYY-MM-DD): ");
+        String endDateInput = getInput(scanner, "Enter End Date (YYYY-MM-DD): ");
+        String descriptionSearch = getInput(scanner, "Enter Description (keyword):");
+        String vendorSearch = getInput(scanner, "Enter Vendor Name: ");
+        String amountSearch = getInput(scanner, "Enter Amount (ex,. 50.00): ");
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        Double searchAmount = null;
+
+        try {
+            if (!startDateInput.isEmpty()) {
+                startDate = LocalDate.parse(startDateInput.trim());
+            }
+            if (!endDateInput.isEmpty()) {
+                endDate = LocalDate.parse(endDateInput.trim());
+            }
+            if (!amountSearch.isEmpty()) {
+                searchAmount = Double.parseDouble(amountSearch.trim());
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date/amount format. Please try again." + e);
+            return;
+        }
+        ArrayList<Transactions> filteredList = new ArrayList<>();
+        for (Transactions t : transactions) {
+            boolean passesAllFilters = true;
+            if (startDate != null && t.getDate().isBefore(startDate)) {
+                passesAllFilters = false;
+            }
+            if (endDate != null && t.getDate().isAfter(endDate)) {
+                passesAllFilters = false;
+            }
+            if (descriptionSearch.isEmpty() && t.getDescription().toUpperCase().contains(descriptionSearch)) {
+                passesAllFilters = false;
+            }
+            if (vendorSearch.isEmpty() && t.getVendor().toUpperCase().contains(vendorSearch)) {
+                passesAllFilters = false;
+            }
+            if (searchAmount != null) {
+                if(Math.abs(t.getAmount() - searchAmount) > 0.005) {
+                    passesAllFilters = false;
+                }
+            }
+            if (passesAllFilters) {
+                filteredList.add(t);
+            }
+        }
+        System.out.println("\n Custom Search Results \n ");
+        displayFilteredList(filteredList);
     }
 }
 
