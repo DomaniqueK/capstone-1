@@ -1,22 +1,22 @@
 Accounting Transactions LedgerApp
 Date|Time|Description|Vendor|Amount
-2025-10-03|12:15:16|Amazon Purchase|Debit|300.24
+2025-10-03|12:15:16|Amazon Purchase|Debit|-300.24
 2025-10-06|12:38:37|Paycheck|Credit|1925.83
 2025-10-06|18:53:42|Freelance Payment|Credit|1036.23
 2025-10-06|07:25:43|Interest Earned|Credit|1271.77
-2025-10-08|08:55:33|Bookstore Purchase|Debit|214.14
-2025-09-06|14:17:06|Bookstore Purchase|Debit|212.17
-2025-09-10|12:29:27|Grocery Store|Debit|183.29
-2025-09-30|18:54:22|Bank Fee|Debit|202.7
-2025-09-25|13:48:49|Bank Fee|Debit|126.09
-2025-09-15|11:20:41|Spotify Subscription|Debit|50.57
-2025-08-17|14:23:07|Electricity Bill|Debit|197.9
-2025-10-07|12:50:04|Electricity Bill|Debit|104.31
-2025-03-07|07:48:04|Spotify Subscription|Debit|20.32
+2025-10-08|08:55:33|Bookstore Purchase|Debit|-214.14
+2025-09-06|14:17:06|Bookstore Purchase|Debit|-212.17
+2025-09-10|12:29:27|Grocery Store|Debit|-183.29
+2025-09-30|18:54:22|Bank Fee|Debit|-202.7
+2025-09-25|13:48:49|Bank Fee|Debit|-126.09
+2025-09-15|11:20:41|Spotify Subscription|Debit|-50.57
+2025-08-17|14:23:07|Electricity Bill|Debit|-197.9
+2025-10-07|12:50:04|Electricity Bill|Debit|-104.31
+2025-03-07|07:48:04|Spotify Subscription|Debit|-20.32
 2025-05-14|17:36:18|Paycheck|Credit|912.79
-2025-06-12|16:17:07|Amazon Purchase|Debit|96.56
-2024-08-29|18:03:13|Electricity Bill|Debit|310.52
-2024-12-01|13:34:49|Coffee Shop|Debit|22.89
-2024-06-15|11:45:42|Grocery Store|Debit|191.72
-2024-06-12|13:56:39|Rent Payment|Debit|1038.44
-2024-01-23|16:21:03|Uber Ride|Debit|17.33
+2025-06-12|16:17:07|Amazon Purchase|Debit|-96.56
+2024-08-29|18:03:13|Electricity Bill|Debit|-310.52
+2024-12-01|13:34:49|Coffee Shop|Debit|-22.89
+2024-06-15|11:45:42|Grocery Store|Debit|-191.72
+2024-06-12|13:56:39|Rent Payment|Debit|-1038.44
+2024-01-23|16:21:03|Uber Ride|Debit|-17.33
