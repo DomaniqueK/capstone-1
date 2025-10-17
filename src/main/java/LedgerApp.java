@@ -34,10 +34,10 @@ public class LedgerApp {
                     displayLedgerScreen(); // Call the ledger
                     break;
                 case "D":
-                    addDeposit(); // Call the make deposit method and updates the application/ledger
+                    addDeposit(); // Call to make deposit method and updates the application/ledger
                     break;
                 case "P":
-                    makePayment(); // Call the make payment method and updates the application/ledger
+                    makePayment(); // Call to make payment method and updates the application/ledger
                     break;
                 case "X":
                     running = false; // Exit the program
@@ -187,7 +187,7 @@ public class LedgerApp {
                 return t2.getTime().compareTo(t1.getTime()); // Sort from the newest time if the dates are the same
             }
         });
-        System.out.printf("%-12s | %10s | %-25s | %15s | %.2f\n", // Print header so it aligns with file format
+        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
                 "Date", "Time", "Description", "Vendor", "Amount");
         System.out.println("  ");
         for (Transactions t : displayList) { // Loop through the sorted list and print each transaction
@@ -227,7 +227,7 @@ public class LedgerApp {
                 return t2.getTime().compareTo(t1.getTime());
             }
         });
-        System.out.printf("%-12s | %10s | %-25s | %15s | %.2f\n", // Print header so it aligns with file format
+        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
                 "Date", "Time", "Description", "Vendor", "Amount");
         System.out.println("  ");
         for (Transactions t : filteredList) {
