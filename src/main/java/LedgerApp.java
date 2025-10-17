@@ -102,7 +102,7 @@ public class LedgerApp {
         Transactions newTransaction = new Transactions(date, time, description, vendor, amount); // Create new transaction with a positive amount (deposit)
         transactions.add(newTransaction); // Add the new transaction to the list
         saveTransaction(newTransaction); // Put the new transaction on the csv file
-        System.out.println("Deposit added to account!");
+        System.out.println("Deposit made! Get a sweet treat!");
     }
 
     public static void makePayment() {
@@ -116,7 +116,7 @@ public class LedgerApp {
         Transactions newTransaction = new Transactions(date, time, description, vendor, amount); // Create new transaction with a negative amount (payment)
         transactions.add(newTransaction);  // Add the new transaction to the list
         saveTransaction(newTransaction); // Put the new transaction on the csv file
-        System.out.println("Payment made successfully!");
+        System.out.println("Payment successfully made! Just lay down until you get paid.");
     }
 
     private static void saveTransaction(Transactions transactions) {
