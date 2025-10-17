@@ -18,6 +18,16 @@ Reports Menu:
 - 6 Custom Search (filtered by: Date range, Description, Vendor, and Amount)
 
 Screenshots:
-1. ![Home Screen Menu](images/home_screen.png)
+1. ![Home Screen Menu](images/home_screen.)
 2. ![All Transaction View](images/all_transactions.png)
 3. ![Custom Search Results](images/custom_search.png)
+
+Interesting Piece of Code:
+Direct comparison of "double" values often leads to minor inaccuracies. To ensure the amounts are always accurate I used "Cents Check" to convert bot the transaction amount and the search amount into long integers (represented as cents) and compare those instead  
+
+** if (searchAmount != null) { // Check amounts using cents **
+   long transactionsCents = Math.round(t.getAmount() * 100); 
+   long searchCents = Math.round(searchAmount * 100);
+   if (transactionsCents != searchCents) {
+   passesAllFilters = false;
+   }
