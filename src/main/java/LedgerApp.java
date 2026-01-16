@@ -1,14 +1,17 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+
 
 public class LedgerApp {
     // Declare and instantiate the Scanner and ArrayList so that it can be used throughout entire application
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Transactions> transactions = new ArrayList<>();
     String transactionFile = "transactions.csv";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public static void main(String[] args) {
         // Calling the loadTransaction from the csv file to load the information and displayHomeMenu to get the app started
@@ -99,6 +102,7 @@ public class LedgerApp {
         double amount = Double.parseDouble(getInput(scanner, "Enter amount"));
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Transactions newTransaction = new Transactions(date, time, description, vendor, amount); // Create new transaction with a positive amount (deposit)
         transactions.add(newTransaction); // Add the new transaction to the list
         saveTransaction(newTransaction); // Put the new transaction on the csv file
@@ -113,6 +117,7 @@ public class LedgerApp {
         double amount = -amountInput; // convert the positive amount to a negative amount for payments/debits
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Transactions newTransaction = new Transactions(date, time, description, vendor, amount); // Create new transaction with a negative amount (payment)
         transactions.add(newTransaction);  // Add the new transaction to the list
         saveTransaction(newTransaction); // Put the new transaction on the csv file
@@ -128,7 +133,7 @@ public class LedgerApp {
 
             String line = String.format("%s|%s|%s|%s|%.2f", // Format to match csv file with pipes to separate
                     transactions.getDate(),
-                    transactions.getTime(),
+                    transactions.getTime().format(formatter),
                     transactions.getDescription(),
                     transactions.getVendor(),
                     transactions.getAmount()
@@ -187,13 +192,13 @@ public class LedgerApp {
                 return t2.getTime().compareTo(t1.getTime()); // Sort from the newest time if the dates are the same
             }
         });
-        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
+        System.out.printf("%-12s | %-10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
                 "Date", "Time", "Description", "Vendor", "Amount");
         System.out.println("  ");
         for (Transactions t : displayList) { // Loop through the sorted list and print each transaction
-            System.out.printf("%-12s | %10s | %-25s | %15s | %.2f\n",
+            System.out.printf("%-12s | %-10s | %-25s | %15s | %.2f\n",
                     t.getDate(),
-                    t.getTime(),
+                    t.getTime().format(formatter),
                     t.getDescription(),
                     t.getVendor(),
                     t.getAmount());
@@ -227,13 +232,13 @@ public class LedgerApp {
                 return t2.getTime().compareTo(t1.getTime());
             }
         });
-        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
+        System.out.printf("%-12s | %-10s | %20s | %15s | %s\n", // Print header so it aligns with file format
                 "Date", "Time", "Description", "Vendor", "Amount");
         System.out.println("  ");
         for (Transactions t : filteredList) {
-            System.out.printf("%-12s | %10s | %-25s | %15s | %.2f\n", // Print list items
+            System.out.printf("%-12s | %-10s | %-25s | %15s | %.2f\n", // Print list items
                     t.getDate(),
-                    t.getTime(),
+                    t.getTime().format(formatter),
                     t.getDescription(),
                     t.getVendor(),
                     t.getAmount());
@@ -301,13 +306,13 @@ public class LedgerApp {
                 return t2.getTime().compareTo(t1.getTime());
             }
         });
-        System.out.printf("%-12s | %10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
+        System.out.printf("%-12s | %-10s | %-25s | %15s | %s\n", // Print header so it aligns with file format
                 "Date", "Time", "Description", "Vendor", "Amount");
         System.out.println("  ");
         for (Transactions t : listToDisplay) { // Print the transactions in the filtered and sorted list
-            System.out.printf("%-12s | %10s | %-25s | %15s | %s\n",
+            System.out.printf("%-12s | %-10s | %-25s | %15s | %s\n",
                     t.getDate(),
-                    t.getTime(),
+                    t.getTime().format(formatter),
                     t.getDescription(),
                     t.getVendor(),
                     t.getAmount());
