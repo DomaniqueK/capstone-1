@@ -8,8 +8,8 @@ Home menu:
 
 Ledger View:
 - (A) Display All transactions from newest to oldest
-- (D) Displays  only deposits
-- (P) Displays only payments
+- (D) HomeScreen  only deposits
+- (P) HomeScreen only payments
 - (R) Reports menu
 
 Reports Menu:
